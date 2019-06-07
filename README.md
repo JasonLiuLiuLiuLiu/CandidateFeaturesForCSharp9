@@ -9,11 +9,11 @@ C# 8.0还未正式发布,在官网它的最新版本还是Preview 5,通往C＃9�
 
 这篇文章基于，
 
-- [9.0语言版本规划的候选人](https://github.com/dotnet/csharplang/milestone/15)
+- [C# 9.0候选新特性](https://github.com/dotnet/csharplang/milestone/15)
 
 ## Records and Pattern-based With-Expression
 
- 这个功能我等待了很长时间,Records是一种轻量级的不可变类型,它可能是,方法，属性，运算符等，它允许我们进行结构的比较, 此外,默认情况下,Records属性是只读的。
+ 这个功能我等待了很长时间,Records是一种轻量级的不可变类型,它可以是方法,属性,运算符等,它允许我们进行结构的比较, 此外,默认情况下,Records属性是只读的。
 
 Records可以是值类型或引用类型。
 
@@ -91,7 +91,7 @@ var newPoint3D = Point3D.With(x: 42);
 
  “结构体是你必须要有一些约定来实现的东西。你可以让它们不是只读的,你也不用去实现他们的比较逻辑,但如果你不这样做,你将会失去它几乎所有的好处，但编译器不会强制执行这些约束。
 
-但是Records类型由是编译器实现，这意味着您必须满足所有这些条件并且不能错误。
+Records类型由是编译器实现，这意味着您必须满足所有这些条件并且不能错误。
 
  因此，它们不仅可以减少重复代码，还可以消除一大堆潜在的错误。
 
@@ -143,9 +143,7 @@ public class Greeter
 }
 ```
 
-
-
-有了Records之后，我们可以将C＃代码减少更少，
+有了Records之后，我们可以将C＃代码大大地，
 
 ```c#
 ublic class Greeter(name: string)     
@@ -332,15 +330,9 @@ public struct Rational
 } 
 ```
 
-
-
 [链接到StackOverflow示例](https://stackoverflow.com/questions/333829/why-cant-i-define-a-default-constructor-for-a-struct-in-net)
 
- 
-
-该提议旨在消除阻止声明默认构造函数的语言限制。CLR已经完全支持具有默认构造函数的结构，并且C＃支持使用它们。它们与常量完全无关，并且由于该特征已经存在于CLR级别并且表现不同，因此无法与常量相关。
-
-来自官方提案的引文，
+其实CLR已经允许值类型数据具有无参构造函数,只是C# 对这个功能进行了限制,在C# 9.0中可能会消除这种限制.
 
 ## 原生大小的数字类型
 
@@ -359,23 +351,13 @@ xamarin中已存在类似的概念，
 
  这些提供了一种通用且安全的机制，用于向C＃语言声明固定大小的缓冲区。
 
- 
+目前,用户可以在不安全的环境中创建固定大小的缓冲区。但是，这需要用户处理指针，手动执行边界检查，并且只支持一组有限的类型（bool，byte，char，short，int，long，sbyte，ushort，uint，ulong，float和double）。该特性引入后将使固定大小的缓冲区变得安全安全，如下例所示。
 
-“用户可以在不安全的环境中创建固定大小的缓冲区。但是，这需要用户处理指针，手动执行边界检查，并且只支持一组有限的类型（bool，byte，char，short，int，long，sbyte，ushort，uint，ulong，float和double） “。
-
- 
-
-此功能将使固定大小的缓冲区变得安全安全，如下例所示。
-
- 
-
-可以通过以下方式声明一个安全的固定大小的缓冲区，
+ 可以通过以下方式声明一个安全的固定大小的缓冲区，
 
 ```c#
 public fixed DXGI_RGB GammaCurve[1025];  
 ```
-
-
 
 该声明将由编译器转换为内部表示，类似于以下内容，
 
@@ -399,13 +381,9 @@ struct <Buffer>e__FixedBuffer_1024<T>
 
 
 
-
-
 ## Uft8字符串文字
 
- 
-
-它是关于定义一种新的字符串类型UTF8String，它将是，
+ 它是关于定义一种新的字符串类型UTF8String，它将是，
 
 ```c#
 System.UTF8String myUTF8string ="Test String";  
@@ -461,4 +439,4 @@ interface I4 : I3
 
  
 
-您已经阅读了第一个C＃9候选功能。正如您所看到的，许多新功能受到其他编程语言或编程范例的启发，而不是自我创新，这些些候特性大部分在在社区中得到了广泛认可。
+您已经阅读了第一个C＃9候选特性。正如您所看到的，许多新功能受到其他编程语言或编程范例的启发，而不是自我创新，这些些候特性大部分在在社区中得到了广泛认可。
