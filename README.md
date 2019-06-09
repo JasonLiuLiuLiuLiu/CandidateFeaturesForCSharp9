@@ -11,6 +11,19 @@ C# 8.0还未正式发布,在官网它的最新版本还是Preview 5,通往C＃9�
 
 - [C# 9.0候选新特性](https://github.com/dotnet/csharplang/milestone/15)
 
+## 原生大小的数字类型
+
+ 这次引入一组新类型（nint，nuint，nfloat等）'n'表示`native(原生)`,该特性允许声明一个32位或64位的数据类型,这取决于操作系统的平台类型。
+
+```c#
+nint nativeInt = 55; take 4 bytes when I compile in 32 Bit host.    
+nint nativeInt = 55; take 8 bytes when I compile in 64 Bit host with x64 compilation settings.  
+```
+
+xamarin中已存在类似的概念，
+
+- [xamarin原生类型](https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/native-types-cross-platform)
+
 ## Records and Pattern-based With-Expression
 
  这个功能我等待了很长时间,Records是一种轻量级的不可变类型,它可以是方法,属性,运算符等,它允许我们进行结构的比较, 此外,默认情况下,Records属性是只读的。
@@ -169,9 +182,9 @@ Less code!  =  I love it!
 
  此这特性最初与“extending everything”功能一起引入，您可以将它们组合在一起，如Mads Torgersen给出的例子所示。
 
- 我引用了官方提案中的一些结论：（shape是Type Classes的一个新的独特关键字）
+ 我引用了官方提案中的一些结论：
 
-“一般来说，”shape“声明非常类似于接口声明，除了以下情况，
+“一般来说，”shape“（shape是Type Classes的一个新的关键字）声明非常类似于接口声明，除了以下情况，
 
 - 它可以定义任何类型的成员（包括静态成员）
 - 可以通过扩展实现
@@ -225,7 +238,7 @@ instance NumInt : Num<int>
 
 通过上面例子,可以看到接口和shape的语法类似 ,那我们再来看看Mads Torgersen给出的例子
 
-Note：shape不是一种类型。相反，shape的主要目的是用作通用约束，限制类型参数以具有正确的形状，同时允许通用声明的主体使用该形状，
+> Note：shape不是一种类型。相反，shape的主要目的是用作通用约束，限制类型参数以具有正确的形状，同时允许通用声明的主体使用该形状，
 
 [原始来源](https://github.com/dotnet/csharplang/issues/164)
 
@@ -332,19 +345,6 @@ public struct Rational
 
 其实CLR已经允许值类型数据具有无参构造函数,只是C# 对这个功能进行了限制,在C# 9.0中可能会消除这种限制.
 
-## 原生大小的数字类型
-
- 这次引入一组新类型（nint，nuint，nfloat等）'n'表示`native(原生)`,该特性允许声明一个32位或64位的数据类型,这取决于操作系统的平台类型。
-
- ```c#
-nint nativeInt = 55; take 4 bytes when I compile in 32 Bit host.    
-nint nativeInt = 55; take 8 bytes when I compile in 64 Bit host with x64 compilation settings.  
- ```
-
-xamarin中已存在类似的概念，
-
-- [xamarin原生类型](https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/native-types-cross-platform)
-
 ## 固定大小的缓冲区
 
  这些提供了一种通用且安全的机制，用于向C＃语言声明固定大小的缓冲区。
@@ -399,12 +399,12 @@ interface I1
     void M(int) { }    
 }    
     
-interface I2 :I1    
+interface I2 :I1   
 {    
     void M(short) { }    
 }    
     
-interface I3 : I2   
+interface I3 : I2 ,I1  
 {    
     override void I1.M(int) { }    
 }    
@@ -420,13 +420,13 @@ interface I4 : I3
 
 
 
-棘手的部分是M（short）和M（int）都适用于M（0），但查找规则也说如果我们在更加派生的界面中找到一个适用的成员，我们会忽略来自较少派生的成员结合在查找期间找不到覆盖的规则，当查看I3时，我们发现的第一件事是I2.M，这是适用的，这意味着I1.M没有出现在适用成员列表中。
+这里最棘手的部分是，无论`M(short)`和`M(int)`适用于 `M(0)`，但在编译器中查找规则是:如果发现在多个派生接口的适用的成员，我们忽略派生程度较小的接口成员。当进入`I3`查找时我们发现的第一件事是查找`I2.M`，这是适用的，这意味着`I1.M`不会出现在适用成员列表中,这样overrides就没有生效了.
 
- 
+由于我们在上次会议中得出结论，目标类型中*必须*存在实现 ，并且`I2.M`是唯一适用的成员，因此`base(I3).M(0)`写入的调用是错误的，因为`I2.M`没有实现`I3`。
 
-由于我们在上次会议中得出结论，目标类型中必须存在一个实现，并且I2.M是唯一适用的成员，因此编写的调用库（I3）.M（0）是一个错误，因为I2.M没有在I3中有一个实现。“
+**结论**
 
- 
+上次会议的决定得到了肯定，我们得出结论，现有的查找规则不会改变,但是现在也不清楚新的查找规则会是什么样子以及什么时候应用新的规则,在https://github.com/dotnet/csharplang/issues/2337 可以看到有了两种解决方案,可能在C# 8.0中先应用一个临时的解决方案PLAN B,等到c# 9.0 再应用更复杂的解决方案PLAN A.
 
 更多信息，
 
@@ -438,3 +438,7 @@ interface I4 : I3
  
 
 您已经阅读了第一个C＃9候选特性。正如您所看到的，许多新功能受到其他编程语言或编程范例的启发，而不是自我创新，这些些候特性大部分在在社区中得到了广泛认可。
+
+
+
+原文 : <https://www.c-sharpcorner.com/article/candidate-features-for-c-sharp-9/>
