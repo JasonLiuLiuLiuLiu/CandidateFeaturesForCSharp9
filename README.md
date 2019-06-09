@@ -5,7 +5,7 @@ C# 8.0还未正式发布,在官网它的最新版本还是Preview 5,通往C＃9�
 
 ![BassamAlugiliTranslateInvestigatre](https://raw.githubusercontent.com/iblogspost/CandidateFeaturesForCSharp9/Writing/BassamAlugiliTranslateInvestigatre.png)
 
-这是世界上第一篇关于C＃9候选功能的文章。阅读完本文后，您将有希望为将来可能遇到的新C＃挑战做好更充分的准备。
+这是世界上第一篇关于C＃9候选功能的文章。阅读完本文后，您将有希望为将来可能遇到的C＃新特性做好更充分的准备。
 
 这篇文章基于，
 
@@ -89,11 +89,9 @@ var newPoint3D = Point3D.With(x: 42);
 
  那么我们为什么要使用Records而不是用结构体呢?为了回答这些问题，我引用了了Reddit的一句话：
 
- “结构体是你必须要有一些约定来实现的东西。你可以让它们不是只读的,你也不用去实现他们的比较逻辑,但如果你不这样做,你将会失去它几乎所有的好处，但编译器不会强制执行这些约束。
+ “结构体是你必须要有一些约定来实现的东西。你可以让它们不是只读的,你也不用去实现他们的比较逻辑,但如果你不这样做,你将会失去它几乎所有的好处，但编译器不会强制执行这些约束"。
 
-Records类型由是编译器实现，这意味着您必须满足所有这些条件并且不能错误。
-
- 因此，它们不仅可以减少重复代码，还可以消除一大堆潜在的错误。
+Records类型由是编译器实现，这意味着您必须满足所有这些条件并且不能错误, 因此，它们不仅可以减少重复代码，还可以消除一大堆潜在的错误。
 
  此外，这个功能在F＃中存在了十多年，其他语言如（Scala，Kotlin）也有类似的概念。
 
@@ -143,7 +141,7 @@ public class Greeter
 }
 ```
 
-有了Records之后，我们可以将C＃代码大大地，
+有了Records之后，我们可以将C＃代码大大地减少了，
 
 ```c#
 ublic class Greeter(name: string)     
