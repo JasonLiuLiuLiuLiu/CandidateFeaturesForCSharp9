@@ -389,47 +389,6 @@ System.UTF8String myUTF8string ="Test String";
 
 
 
-## Base(T)
-
- 问题:
-
-```c#
-interface I1    
-{     
-    void M(int) { }    
-}    
-    
-interface I2 :I1   
-{    
-    void M(short) { }    
-}    
-    
-interface I3 : I2 ,I1  
-{    
-    override void I1.M(int) { }    
-}    
-    
-interface I4 : I3    
-{    
-    void M2()    
-    {    
-        base(I3).M(0) // What does this do?    
-    }    
-} 
-```
-
-
-
-这里最棘手的部分是，无论`M(short)`和`M(int)`适用于 `M(0)`，但在编译器中查找规则是:如果发现在多个派生接口的适用的成员，我们忽略派生程度较小的接口成员。当进入`I3`查找时我们发现的第一件事是查找`I2.M`，这是适用的，这意味着`I1.M`不会出现在适用成员列表中,这样overrides就没有生效了.
-
-由于我们在上次会议中得出结论，目标类型中*必须*存在实现 ，并且`I2`中`M`是唯一适用的成员，因此`base(I3).M(0)`写入的调用是错误的，因为`I2.M`没有实现`I3`。
-
-**结论**
-
-上次会议的决定得到了肯定，我们得出结论，现有的查找规则不会改变,但是现在也不清楚新的查找规则会是什么样子以及什么时候应用新的规则.
-
-> 在https://github.com/dotnet/csharplang/issues/2337 可以看到有了两种解决方案,可能在C# 8.0中先应用一个临时的解决方案PLAN B,等到c# 9.0 再应用更复杂的解决方案PLAN A. 对于这个特性我还没有研究清楚,所以还不适合妄加评论,有兴趣的可以看看github原文.
-
 更多信息，
 
 - *https://github.com/dotnet/csharplang/issues/2337*
