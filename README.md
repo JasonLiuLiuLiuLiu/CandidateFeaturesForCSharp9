@@ -5,7 +5,7 @@ C# 8.0还未正式发布,在官网它的最新版本还是Preview 5,通往C＃9�
 
 ![BassamAlugiliTranslateInvestigatre](https://raw.githubusercontent.com/iblogspost/CandidateFeaturesForCSharp9/Writing/BassamAlugiliTranslateInvestigatre.png)
 
-这是世界上第一篇关于C＃9候选功能的文章。阅读完本文后，您将有希望为将来可能遇到的C＃新特性做好更充分的准备。
+这是世界上第一篇关于C＃9候选功能的文章。阅读完本文后，你将会为未来可能遇到的C＃ 9.0新特性做好更充分的准备。
 
 这篇文章基于，
 
@@ -386,6 +386,35 @@ struct <Buffer>e__FixedBuffer_1024<T>
 ```c#
 System.UTF8String myUTF8string ="Test String";  
 ```
+
+## Base(T)
+
+此功能用于解决默认接口方法中的[覆盖冲突问题](https://www.infoq.com/articles/default-interface-methods-cs8/):
+
+ ```c#
+interface I1
+{ 
+    void M(int) { }
+}
+
+interface I2
+{
+    void M(short) { }
+}
+
+interface I3
+{
+    override void I1.M(int) { }
+}
+
+interface I4 : I3
+{
+    void M2()
+    {
+        base(I3).M(0) // Which M should be used here? What does this do?
+    }
+}
+ ```
 
 
 
