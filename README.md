@@ -390,7 +390,7 @@ System.UTF8String myUTF8string ="Test String";
 
 此功能用于解决默认接口方法中的[覆盖冲突问题](https://www.infoq.com/articles/default-interface-methods-cs8/):
 
- ```c#
+```c#
 interface I1
 { 
     void M(int) { }
@@ -413,7 +413,7 @@ interface I4 : I3
         base(I3).M(0) // Which M should be used here? What does this do?
     }
 }
- ```
+```
 
 
 
@@ -426,7 +426,7 @@ interface I4 : I3
 
  
 
-您已经阅读了第一个C＃9候选特性。正如您所看到的，许多新功能受到其他编程语言或编程范例的启发，而不是自我创新，这些些候特性大部分在在社区中得到了广泛认可。
+您已经阅读了第一个C＃9候选特性。正如您所看到的，许多新功能受到其他编程语言或编程范例的启发，而不是自我创新，这些特性大部分在在社区中得到了广泛认可,所以引入C# 后应该也会给大家带来不错的体验.
 
 
 
